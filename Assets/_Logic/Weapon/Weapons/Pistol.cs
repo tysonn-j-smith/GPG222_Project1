@@ -15,15 +15,14 @@ public class Pistol : Weapon
         Vector3 dir = BulletSpread();
         Ray ray = new Ray(firePoint.position, dir);
 
-        if(effect != null)
-        {
-            effect.PlayMuzzleEffect();
-        }
+        effect?.PlayMuzzleEffect();
 
         if (Physics.Raycast(ray, out RaycastHit hit, weaponRange, damageableMask))
         {
             Debug.DrawLine(firePoint.position, hit.point, Color.red);
-            Debug.Log($"Hit {hit.collider.name}");
+
+            HitBox hitbox = hit.collider.GetComponent<HitBox>();
+            hitbox?.ReceiveHit(weaponDamage);
         }
         else
         {
