@@ -3,17 +3,20 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputHandler))]
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(PlayerCamera))]
+[RequireComponent(typeof(PlayerWeapon))]
 public class Player : MonoBehaviour
 {
     private PlayerInputHandler handler;
     private PlayerMotor motor;
     private PlayerCamera cam;
+    private PlayerWeapon weapon;
 
     private void Awake()
     {
         handler = GetComponent<PlayerInputHandler>();
         motor = GetComponent<PlayerMotor>();
         cam = GetComponent<PlayerCamera>();
+        weapon = GetComponent<PlayerWeapon>();
     }
 
     private void OnEnable()
@@ -51,11 +54,11 @@ public class Player : MonoBehaviour
 
     private void RequestShoot()
     {
-
+        weapon.ShootCall();
     }
 
     private void RequestReload()
     {
-
+        weapon.ReloadCall();
     }
 }

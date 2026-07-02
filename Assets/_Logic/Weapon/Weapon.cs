@@ -86,9 +86,14 @@ public abstract class Weapon : MonoBehaviour
         isReloading = false;
     }
 
-    protected Vector2 BulletSpread()
+    protected Vector3 BulletSpread()
     {
-        return firePoint.forward + new Vector3(Random.Range(-bulletSpread, bulletSpread), Random.Range(-bulletSpread, bulletSpread), 0f);
+        bulletDir = firePoint.forward;
+
+        bulletDir += firePoint.right * Random.Range(-bulletSpread, bulletSpread);
+        bulletDir += firePoint.up * Random.Range(-bulletSpread, bulletSpread);
+
+        return bulletDir;
     }
 
     public abstract void Shoot();
