@@ -23,6 +23,8 @@ public class Pistol : Weapon
 
             HitBox hitbox = hit.collider.GetComponent<HitBox>();
             hitbox?.ReceiveHit(weaponDamage);
+
+            effect?.PlayImpactEffect(hit);
         }
         else
         {
