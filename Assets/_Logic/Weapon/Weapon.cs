@@ -47,7 +47,6 @@ public abstract class Weapon : MonoBehaviour
             return;
         }
 
-        currentAmmo--;
         lastFireTime = fireRate;
 
         Shoot();

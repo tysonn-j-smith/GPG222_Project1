@@ -30,5 +30,7 @@ public class Pistol : Weapon
         {
             Debug.DrawRay(firePoint.position, dir * weaponRange , Color.red);
         }
+
+        currentAmmo--;
     }
 }
