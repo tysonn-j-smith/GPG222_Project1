@@ -554,8 +554,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraPivot: {fileID: 1855207368}
   cameraPrefab: {fileID: 7167767204664514337, guid: b59530d80a1e12a409406db27d75d371, type: 3}
-  camXSens: 15
-  camYSens: 15
+  camXSens: 12
+  camYSens: 7
 --- !u!1 &1855207367
 GameObject:
   m_ObjectHideFlags: 0
