@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
 
     private void RequestJump()
     {
-
+        motor.TryJump();
     }
 
     private void RequestShoot()
