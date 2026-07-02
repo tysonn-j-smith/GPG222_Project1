@@ -2,15 +2,18 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerInputHandler))]
 [RequireComponent(typeof(PlayerMotor))]
+[RequireComponent(typeof(PlayerCamera))]
 public class Player : MonoBehaviour
 {
     private PlayerInputHandler handler;
     private PlayerMotor motor;
+    private PlayerCamera cam;
 
     private void Awake()
     {
         handler = GetComponent<PlayerInputHandler>();
         motor = GetComponent<PlayerMotor>();
+        cam = GetComponent<PlayerCamera>();
     }
 
     private void OnEnable()
@@ -38,7 +41,7 @@ public class Player : MonoBehaviour
 
     private void RequestLook(Vector2 input)
     {
-
+        cam.SetInput(input);
     }
 
     private void RequestJump()
