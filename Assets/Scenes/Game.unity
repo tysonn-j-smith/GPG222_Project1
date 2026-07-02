@@ -420,6 +420,7 @@ GameObject:
   - component: {fileID: 1846731153}
   - component: {fileID: 1846731152}
   - component: {fileID: 1846731157}
+  - component: {fileID: 1846731158}
   - component: {fileID: 1846731151}
   m_Layer: 0
   m_Name: player
@@ -556,6 +557,19 @@ MonoBehaviour:
   cameraPrefab: {fileID: 7167767204664514337, guid: b59530d80a1e12a409406db27d75d371, type: 3}
   camXSens: 12
   camYSens: 7
+--- !u!114 &1846731158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846731150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 706f56e20504ef345a08654b18a4114b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeapon: {fileID: 0}
 --- !u!1 &1855207367
 GameObject:
   m_ObjectHideFlags: 0
