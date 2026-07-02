@@ -47,8 +47,11 @@ public class TimedGrenade : Projectile
             {
                 if(rayHit.collider != hit)
                 {
+                    Debug.DrawLine(transform.position, rayHit.point, Color.blue, 2f);
                     continue;
                 }
+
+                Debug.DrawLine(transform.position, target, Color.red, 2f);
             }
 
             HitBox hitbox = hit.gameObject.GetComponent<HitBox>();
