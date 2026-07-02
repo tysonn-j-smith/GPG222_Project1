@@ -538,6 +538,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1855207368}
     m_Modifications:
+    - target: {fileID: 4203411166489437480, guid: 96cc83208df143949a092770466fc8cf, type: 3}
+      propertyPath: reloadDelay
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8128618330977871144, guid: 96cc83208df143949a092770466fc8cf, type: 3}
       propertyPath: m_Name
       value: pistolWeapon
