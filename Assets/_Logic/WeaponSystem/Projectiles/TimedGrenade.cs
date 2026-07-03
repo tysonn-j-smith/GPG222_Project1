@@ -54,8 +54,8 @@ public class TimedGrenade : Projectile
                 Debug.DrawLine(transform.position, target, Color.red, 2f);
             }
 
-            HitBox hitbox = hit.gameObject.GetComponent<HitBox>();
-            hitbox?.ReceiveHit(projectileDamage);
+            //HitBox hitbox = hit.gameObject.GetComponent<HitBox>();
+            //hitbox?.ReceiveHit(projectileDamage);
         }
 
         //Add Object Pooling.

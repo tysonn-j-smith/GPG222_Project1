@@ -1,9 +1,12 @@
+using System;
 using UnityEngine;
 
 public class PlayerInfoHandler : MonoBehaviour
 {
     private int currentScore = 0;
     private string playerName = string.Empty;
+
+    public event Action<PlayerInfoHandler> OnKillConfirmed;
 
     private void OnDestroy()
     {
@@ -21,13 +24,14 @@ public class PlayerInfoHandler : MonoBehaviour
         return playerName;
     }
 
-    public void IncreaseScore()
-    {
-        currentScore++;
-    }
-
     public int GetScore()
     {
         return currentScore;
+    }
+
+    public void ConfirmKill()
+    {
+        currentScore++;
+        OnKillConfirmed?.Invoke(this);
     }
 }

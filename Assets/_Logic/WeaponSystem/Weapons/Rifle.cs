@@ -44,7 +44,7 @@ public class Rifle : Weapon
                 Debug.DrawLine(firePoint.position, hit.point, Color.red);
 
                 HitBox hitbox = hit.collider.GetComponent<HitBox>();
-                hitbox?.ReceiveHit(weaponDamage);
+                hitbox?.ReceiveHit(weaponDamage, transform.root.gameObject);
 
                 effect?.PlayImpactEffect(hit);
             }

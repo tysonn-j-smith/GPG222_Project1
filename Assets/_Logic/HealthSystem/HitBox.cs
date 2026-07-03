@@ -6,10 +6,10 @@ public class HitBox : MonoBehaviour
     [Header("HitBox Settings")]
     [SerializeField] private bool critical = false;
 
-    public event Action<int, bool> OnHit;
+    public event Action<int, bool, GameObject> OnHit;
 
-    public void ReceiveHit(int dmg)
+    public void ReceiveHit(int dmg, GameObject attacker)
     {
-        OnHit?.Invoke(dmg, critical);
+        OnHit?.Invoke(dmg, critical, attacker);
     }
 }

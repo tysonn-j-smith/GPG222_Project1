@@ -7,6 +7,8 @@ public class HealthSystem : MonoBehaviour
 
     private HitBox[] hitBoxes;
 
+    private GameObject lastAttacker;
+
     private int currentHealth = 0;
 
     private void Awake()
@@ -32,8 +34,10 @@ public class HealthSystem : MonoBehaviour
         }
     }
 
-    private void HandleHit(int dmg, bool crit)
+    private void HandleHit(int dmg, bool crit, GameObject attacker)
     {
+        lastAttacker = attacker;
+
         int totalDmg;
         if(crit)
         {
@@ -45,7 +49,7 @@ public class HealthSystem : MonoBehaviour
         }
 
         currentHealth -= totalDmg;
-        Debug.Log($"Dealt {totalDmg} damage to {gameObject.name}");
+        Debug.Log($"{attacker.name} dealt {totalDmg} damage to {gameObject.name}");
 
         if(currentHealth <= 0)
         {
@@ -55,6 +59,12 @@ public class HealthSystem : MonoBehaviour
 
     private void HandleDeath()
     {
+        if(lastAttacker != null)
+        {
+            PlayerInfoHandler killer = lastAttacker.GetComponent<PlayerInfoHandler>();
+            killer?.ConfirmKill();
+        }
+
         gameObject.SetActive(false);
     }
 }

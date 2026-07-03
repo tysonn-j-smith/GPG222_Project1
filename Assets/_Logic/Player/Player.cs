@@ -4,12 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(PlayerCamera))]
 [RequireComponent(typeof(PlayerWeapon))]
+[RequireComponent(typeof(PlayerInfoHandler))]
 public class Player : MonoBehaviour
 {
     private PlayerInputHandler handler;
     private PlayerMotor motor;
     private PlayerCamera cam;
     private PlayerWeapon weapon;
+    private PlayerInfoHandler info;
 
     private void Awake()
     {
@@ -17,6 +19,19 @@ public class Player : MonoBehaviour
         motor = GetComponent<PlayerMotor>();
         cam = GetComponent<PlayerCamera>();
         weapon = GetComponent<PlayerWeapon>();
+        info = GetComponent<PlayerInfoHandler>();
+    }
+
+    private void Start()
+    {
+        info.SetName("Test Name!");
+         
+        GameMaster.Instance.RegisterPlayer(this.gameObject, info.GetName());
+    }
+
+    private void OnDestroy()
+    {
+        GameMaster.Instance.UnregisterPlayer(this.gameObject);
     }
 
     private void OnEnable()

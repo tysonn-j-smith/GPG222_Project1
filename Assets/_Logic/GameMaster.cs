@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameMaster : MonoBehaviour
@@ -5,6 +6,8 @@ public class GameMaster : MonoBehaviour
     public static GameMaster Instance { get; private set; }
 
     private PlayerScoreManager scoreManager;
+
+    [SerializeField] private TMP_Text scoreBoardTestText;
 
     private void Awake()
     {
@@ -26,32 +29,20 @@ public class GameMaster : MonoBehaviour
     {
         if(scoreManager != null)
         {
-            scoreManager.
+            scoreManager.RemovePlayer(player);
         }
     }
 
-}
-
-
-public class PlayerScoreManager : MonoBehaviour
-{
-    public void AddPlayer(GameObject player, string newName)
+    public void UpdateScoreBoard()
     {
-        PlayerInfoHandler pc = player.GetComponent<PlayerInfoHandler>();
-        if(pc != null)
+        if (scoreBoardTestText != null)
         {
-            pc.SetName(newName);
-        }
-    }
+            scoreBoardTestText.text = "";
 
-    public void UpdateScore(GameObject player)
-    {
-        PlayerInfoHandler pc = player.GetComponent<PlayerInfoHandler>();
-        if(pc != null)
-        {
-            pc.IncreaseScore();
-
-            Debug.Log(pc.GetScore());
+            foreach(PlayerInfoHandler player in scoreManager.players.Values)
+            {
+                scoreBoardTestText.text += player.GetName() + " : " + player.GetScore() + "\n";
+            }
         }
     }
 }
