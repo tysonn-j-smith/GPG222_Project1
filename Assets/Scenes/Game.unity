@@ -13646,6 +13646,7 @@ GameObject:
   - component: {fileID: 1846731157}
   - component: {fileID: 1846731158}
   - component: {fileID: 1846731151}
+  - component: {fileID: 1846731159}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -13794,6 +13795,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeapon: {fileID: 1558759834}
+--- !u!114 &1846731159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846731150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fe704c12a777d64d8e3bebe31de5ca8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1848372770 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1115974188861813104, guid: e3c153d7de813234482af16fc7281ea9, type: 3}
