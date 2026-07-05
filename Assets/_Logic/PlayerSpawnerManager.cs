@@ -18,7 +18,7 @@ public class PlayerSpawnerManager : NetworkBehaviour
             return;
         }
 
-        CallSpawn();
+        //CallSpawn();
     }
 
     public void CallSpawn()
@@ -45,6 +45,11 @@ public class PlayerSpawnerManager : NetworkBehaviour
 
         Transform rngPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
         GameObject playerObj = ObjectPooler.Instance.GetFromPool("player", rngPoint.position, Quaternion.identity);
+        Player player = playerObj.GetComponent<Player>();
+        if(player != null)
+        {
+            player.RegisterPlayer();
+        }
 
         if (playerObj == null)
         {

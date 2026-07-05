@@ -1,11 +1,12 @@
 using UnityEngine;
+using Unity.Netcode;
 
 [RequireComponent(typeof(PlayerInputHandler))]
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(PlayerCamera))]
 [RequireComponent(typeof(PlayerWeapon))]
 [RequireComponent(typeof(PlayerInfoHandler))]
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
     private PlayerInputHandler handler;
     private PlayerMotor motor;
@@ -20,11 +21,6 @@ public class Player : MonoBehaviour
         cam = GetComponent<PlayerCamera>();
         weapon = GetComponent<PlayerWeapon>();
         info = GetComponent<PlayerInfoHandler>();
-    }
-
-    private void Start()
-    {
-        GameMaster.Instance.RegisterPlayer(this.gameObject, info.GetName());
     }
 
     private void OnDestroy()
@@ -48,6 +44,11 @@ public class Player : MonoBehaviour
         handler.OnJumpInput -= RequestJump;
         handler.OnShootInput -= RequestShoot;
         handler.OnReloadInput -= RequestReload;
+    }
+
+    public void RegisterPlayer()
+    {
+        GameMaster.Instance.RegisterPlayer(this.gameObject, info.GetName());
     }
 
     private void RequestMovement(Vector2 input)

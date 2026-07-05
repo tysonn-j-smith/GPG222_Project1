@@ -30,7 +30,7 @@ public class PlayerScoreManager : MonoBehaviour
             players.Add(player, info);
         }
 
-        Debug.Log($"{info.GetName()} joined the game.");
+        Debug.Log($"{info.GetName()} joined the game and is signed up to Score Manager.");
     }
 
     public void RemovePlayer(GameObject player)
