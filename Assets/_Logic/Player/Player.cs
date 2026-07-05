@@ -24,8 +24,6 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        info.SetName("Test Name!");
-         
         GameMaster.Instance.RegisterPlayer(this.gameObject, info.GetName());
     }
 
