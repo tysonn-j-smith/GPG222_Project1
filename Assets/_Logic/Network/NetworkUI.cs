@@ -6,22 +6,28 @@ using UnityEngine.UI;
 public class NetworkUI : NetworkBehaviour
 {
     [Header("NetworkUI Settings")]
-    [SerializeField] private Button hostButton;
-    [SerializeField] private Button clientButton;
+    [SerializeField] private Button startHostButton;
+    [SerializeField] private Button startClientButton;
+    [SerializeField] private Button quitButton;
     [SerializeField] private TMP_Text playerCountText;
 
     private NetworkVariable<int> playersNum = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
 
     private void Awake()
     {
-        hostButton.onClick.AddListener(() =>
+        startHostButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartHost();
         });
 
-        clientButton.onClick.AddListener(() =>
+        startClientButton.onClick.AddListener(() =>
         {
             NetworkManager.Singleton.StartClient();
+        });
+
+        quitButton.onClick.AddListener(() =>
+        {
+            Application.Quit();
         });
     }
 

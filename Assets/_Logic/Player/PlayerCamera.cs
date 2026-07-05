@@ -28,8 +28,8 @@ public class PlayerCamera : NetworkBehaviour
         GameObject camObj = Instantiate(cameraPrefab, cameraPivot.transform);
         cam = camObj.GetComponent<Camera>();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
     private void LateUpdate()
