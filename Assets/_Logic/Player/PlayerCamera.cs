@@ -74,7 +74,7 @@ public class PlayerCamera : NetworkBehaviour
         UpdateRotationClientRpc(transform.rotation, pitch);
     }
 
-    [Rpc(SendTo.ClientsAndHost)]
+    [Rpc(SendTo.Everyone)]
     private void UpdateRotationClientRpc(Quaternion rot, float pitch)
     {
         if(IsOwner)

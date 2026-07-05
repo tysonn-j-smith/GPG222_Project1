@@ -65,6 +65,7 @@ public class HealthSystem : MonoBehaviour
             killer?.ConfirmKill();
         }
 
+        //HANDLE DEATH.
         gameObject.SetActive(false);
     }
 }

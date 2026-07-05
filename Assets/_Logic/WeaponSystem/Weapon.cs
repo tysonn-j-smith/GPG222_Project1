@@ -70,7 +70,8 @@ public abstract class Weapon : MonoBehaviour
         return bulletDir;
     }
 
-    #region RPC
+    #region RPC Related
+    //TODO: change to acutal netcode.
     public void TryShootServer()
     {
         if (!CanShoot())
@@ -89,6 +90,7 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
+    //TODO: change to acutal netcode.
     public void TryReloadServer()
     {
         if(isReloading)
