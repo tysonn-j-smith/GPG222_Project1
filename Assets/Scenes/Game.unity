@@ -5522,12 +5522,12 @@ GameObject:
   m_Component:
   - component: {fileID: 761900081}
   m_Layer: 5
-  m_Name: highScoreTable
+  m_Name: highScoreTable - TODO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &761900081
 RectTransform:
   m_ObjectHideFlags: 0
