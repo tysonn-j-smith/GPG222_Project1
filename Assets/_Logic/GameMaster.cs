@@ -41,7 +41,7 @@ public class GameMaster : MonoBehaviour
         //Reg player to all systems on join.
         if(scoreManager != null)
         {
-            scoreManager.AddPlayer(player, newName);
+            scoreManager.AddPlayer(player);
         }
     }
 

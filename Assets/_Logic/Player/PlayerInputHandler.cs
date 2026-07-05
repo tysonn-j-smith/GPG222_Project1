@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-public class PlayerInputHandler : MonoBehaviour
+public class PlayerInputHandler : NetworkBehaviour
 {
     public event Action<Vector2> OnMoveInput;
     public event Action<Vector2> OnLookInput;
@@ -17,7 +18,7 @@ public class PlayerInputHandler : MonoBehaviour
         actions = new PlayerInputActions();
     }
 
-    private void OnEnable()
+    public override void OnNetworkSpawn()
     {
         if(actions != null)
         {
@@ -37,7 +38,7 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    public override void OnNetworkDespawn()
     {
         if(actions != null)
         {
@@ -57,9 +58,9 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
-        if(actions != null)
+        if (actions != null)
         {
             actions.Dispose();
         }

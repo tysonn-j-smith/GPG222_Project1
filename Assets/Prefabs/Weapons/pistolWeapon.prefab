@@ -80,11 +80,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 4308392457083282378}
-  fireRate: 0.01
-  bulletSpread: 0.07
-  reloadDelay: 0.25
+  fireRate: 6
+  bulletSpread: 0.05
+  reloadDelay: 1.5
   weaponRange: 250
-  weaponDamage: 1
+  weaponDamage: 2
   maxAmmo: 13
   damageableMask:
     serializedVersion: 2
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 254c59893af2a784aa0409781b058bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  muzzleEffect: {fileID: 1327155192675383362}
+  firePoint: {fileID: 0}
 --- !u!1001 &7031119923708592636
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223,11 +223,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbd0084560aa78447815e62d5dfb00cd, type: 3}
---- !u!198 &1327155192675383362 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8356586118848297406, guid: fbd0084560aa78447815e62d5dfb00cd, type: 3}
-  m_PrefabInstance: {fileID: 7031119923708592636}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4505834792027492782 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6851240088512729170, guid: fbd0084560aa78447815e62d5dfb00cd, type: 3}

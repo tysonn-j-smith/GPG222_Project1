@@ -1,7 +1,8 @@
 using UnityEngine;
+using Unity.Netcode;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMotor : MonoBehaviour
+public class PlayerMotor : NetworkBehaviour
 {
     [Header("Motor Settings")]
     [SerializeField] private float moveForce = 10f;
@@ -17,20 +18,25 @@ public class PlayerMotor : MonoBehaviour
 
     private Rigidbody rb;
 
+    public NetworkVariable<Vector3> netPos = new(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
     }
 
     private void FixedUpdate()
     {
-        if(rb == null)
+        if(!IsServer)
         {
             return;
         }
 
         HandleMovement();
         HandleGravity();
+
+        netPos.Value = rb.position;
     }
 
     private void OnDrawGizmosSelected()
@@ -49,17 +55,22 @@ public class PlayerMotor : MonoBehaviour
 
     public void SetInput(Vector2 input)
     {
-        movementInput = input;
-    }
-
-    public void TryJump()
-    {
-        if(!IsGrounded())
+        if (!IsOwner)
         {
             return;
         }
 
-        HandleJump();
+        SetInputServerRpc(input);
+    }
+
+    public void TryJump()
+    {
+        if(!IsOwner)
+        {
+            return;
+        }
+
+        TryJumpServerRpc();
     }
 
     private void HandleJump()
@@ -72,7 +83,7 @@ public class PlayerMotor : MonoBehaviour
         Vector3 moveDir = (transform.forward * movementInput.y + transform.right * movementInput.x).normalized;
         Vector3 velocity = new Vector3(moveDir.x * moveForce, rb.linearVelocity.y, moveDir.z * moveForce);
 
-        rb.linearVelocity = velocity;
+        UpdatePlayerMovementServerRpc(velocity);
     }
 
     private void HandleGravity()
@@ -82,15 +93,43 @@ public class PlayerMotor : MonoBehaviour
             return;
         }
 
-        if(rb.linearVelocity.y < 0f)
-        {
-            float grav = gravity * gravityModifier;
-            rb.AddForce(-transform.up * grav, ForceMode.Force);
-        }
+        Vector3 vel = rb.linearVelocity;
+        float gravityForce = gravity * gravityModifier * Time.fixedDeltaTime;
+        vel.y -= gravityForce;
+
+        rb.linearVelocity = vel;
     }
 
     private bool IsGrounded()
     {
         return Physics.CheckSphere(groundChecker.position, groundCheckerRadius, groundMask);
     }
+
+    #region RPC
+    [Rpc(SendTo.Server)]
+    public void SetInputServerRpc(Vector2 input)
+    {
+        movementInput = input;
+    }
+
+    // MOVEMENT
+    [Rpc(SendTo.Server)]
+    private void UpdatePlayerMovementServerRpc(Vector3 velocity)
+    {
+        Vector3 currentVel = rb.linearVelocity;
+        rb.linearVelocity = new Vector3(velocity.x, currentVel.y, velocity.z);
+    }
+
+    // JUMP
+    [Rpc(SendTo.Server)]
+    private void TryJumpServerRpc()
+    {
+        if (!IsGrounded())
+        {
+            return;
+        }
+
+        HandleJump();
+    }
+    #endregion
 }

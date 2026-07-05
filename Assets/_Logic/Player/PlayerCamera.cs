@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerCamera : MonoBehaviour
+public class PlayerCamera : NetworkBehaviour
 {
     [Header("Camera Settings")]
     [SerializeField] private Transform cameraPivot;
@@ -17,21 +18,23 @@ public class PlayerCamera : MonoBehaviour
 
     private float rotationX = 0f;
 
-    private void Awake()
+    public override void OnNetworkSpawn()
     {
+        if(!IsOwner)
+        {
+            return;
+        }
+
         GameObject camObj = Instantiate(cameraPrefab, cameraPivot.transform);
         cam = camObj.GetComponent<Camera>();
-    }
 
-    private void Start()
-    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     private void LateUpdate()
     {
-        if(cam == null)
+        if(cam == null || !IsOwner)
         {
             return;
         }
@@ -41,6 +44,11 @@ public class PlayerCamera : MonoBehaviour
 
     public void SetInput(Vector2 input)
     {
+        if(!IsOwner)
+        {
+            return;
+        }
+
         lookInput = input;
     }
 
@@ -53,6 +61,29 @@ public class PlayerCamera : MonoBehaviour
         rotationX = Mathf.Clamp(rotationX, -89f, 89f);
 
         cameraPivot.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
-        transform.Rotate(Vector3.up * camX);
+
+        UpdatePlayerRotationServerRpc(camX, rotationX);
     }
+
+    #region RPC
+    [Rpc(SendTo.Server)]
+    private void UpdatePlayerRotationServerRpc(float camX, float pitch)
+    {
+        transform.Rotate(Vector3.up * camX);
+
+        UpdateRotationClientRpc(transform.rotation, pitch);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void UpdateRotationClientRpc(Quaternion rot, float pitch)
+    {
+        if(IsOwner)
+        {
+            return;
+        }
+
+        transform.rotation = rot;
+        cameraPivot.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+    }
+    #endregion
 }

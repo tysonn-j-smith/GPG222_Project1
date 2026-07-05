@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -16,7 +15,7 @@ public abstract class Weapon : MonoBehaviour
 
     protected int currentAmmo = 0;
 
-    protected float lastFireTime = 0;
+    protected float nextFireTime;
 
     protected bool isReloading = false;
 
@@ -25,51 +24,27 @@ public abstract class Weapon : MonoBehaviour
     protected virtual void Start()
     {
         currentAmmo = maxAmmo;
-    }
-
-    protected virtual void Update()
-    {
-        if(lastFireTime > 0f)
-        {
-            lastFireTime -= Time.deltaTime;
-        }
+        nextFireTime = 0f;
     }
 
     public void TryShoot()
     {
         if(!CanShoot())
         {
-            if(currentAmmo <= 0 && !isReloading)
-            {
-                TryReload();
-            }
-
             return;
         }
 
-        lastFireTime = fireRate;
-
-        Shoot();
-
-        if(currentAmmo <= 0)
-        {
-            TryReload();
-        }
+        TryShootServer();
     }
 
     public void TryReload()
     {
-        if(isReloading)
-        {
-            return;
-        }
-
-        StartCoroutine(ReloadRoutine());
+        TryReloadServer();
     }
 
     protected bool CanShoot()
     {
-        return !isReloading && lastFireTime <= 0f && currentAmmo > 0;
+        return !isReloading && Time.time >= nextFireTime && currentAmmo > 0;
     }
 
     protected IEnumerator ReloadRoutine()
@@ -95,5 +70,35 @@ public abstract class Weapon : MonoBehaviour
         return bulletDir;
     }
 
-    public abstract void Shoot();
+    #region RPC
+    public void TryShootServer()
+    {
+        if (!CanShoot())
+        {
+            return;
+        }
+
+        currentAmmo--;
+        nextFireTime = Time.time + fireRate;
+
+        ShootServer();
+
+        if(currentAmmo <= 0)
+        {
+            TryReloadServer();
+        }
+    }
+
+    public void TryReloadServer()
+    {
+        if(isReloading)
+        {
+            return;
+        }
+
+        StartCoroutine(ReloadRoutine());
+    }
+    #endregion
+
+    public abstract void ShootServer();
 }

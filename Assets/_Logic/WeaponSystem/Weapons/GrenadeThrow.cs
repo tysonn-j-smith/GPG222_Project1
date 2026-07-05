@@ -6,7 +6,7 @@ public class GrenadeThrow : Weapon
     [SerializeField] private GameObject grenadeObj;
     [SerializeField] private float throwForce = 10f;
 
-    public override void Shoot()
+    public override void ShootServer()
     {
         GameObject obj = Instantiate(grenadeObj, firePoint.position, Quaternion.identity);
         Rigidbody rb = obj.GetComponent<Rigidbody>();

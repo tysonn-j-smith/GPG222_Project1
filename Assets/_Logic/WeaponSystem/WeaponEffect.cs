@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using Unity.Netcode;
 
-public class WeaponEffect : MonoBehaviour
+public class WeaponEffect : NetworkBehaviour
 {
     [Header("Weapon Effect Settings")]
     [SerializeField] private Transform firePoint;
@@ -23,7 +24,8 @@ public class WeaponEffect : MonoBehaviour
         }
     }
 
-    public void PlayMuzzleEffect()
+    [Rpc(SendTo.Everyone)]
+    public void PlayMuzzleEffectServerRpc()
     {
         if(muzzleEffect == null)
         {
@@ -33,19 +35,20 @@ public class WeaponEffect : MonoBehaviour
         muzzleEffect.Play();
     }
 
-    public void PlayImpactEffect(RaycastHit hit)
+    [Rpc(SendTo.Everyone)]
+    public void PlayImpactEffectServerRpc(Vector3 hitPoint)
     {
         if(impactEffect == null)
         {
             return;
         }
 
-        StartCoroutine(ImpactEffectRoutine(hit));
+        StartCoroutine(ImpactEffectRoutine(hitPoint));
     }
 
-    private IEnumerator ImpactEffectRoutine(RaycastHit hit)
+    private IEnumerator ImpactEffectRoutine(Vector3 hitPoint)
     {
-        impactEffect.transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
+        impactEffect.transform.position = hitPoint;
 
         yield return null;
 

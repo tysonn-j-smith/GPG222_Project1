@@ -13,7 +13,7 @@ public class PlayerScoreManager : MonoBehaviour
         GameMaster.Instance.UpdateScoreBoard();
     }
 
-    public void AddPlayer(GameObject player, string newName)
+    public void AddPlayer(GameObject player)
     {
         PlayerInfoHandler info = player.GetComponent<PlayerInfoHandler>();
 
@@ -22,7 +22,7 @@ public class PlayerScoreManager : MonoBehaviour
             return;
         }
 
-        info.SetName(newName);
+        info.SetName();
         info.OnKillConfirmed += HandleKill;
 
         if (!players.ContainsKey(player))

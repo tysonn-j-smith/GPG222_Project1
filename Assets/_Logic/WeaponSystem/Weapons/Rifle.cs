@@ -17,7 +17,7 @@ public class Rifle : Weapon
         effect = GetComponent<WeaponEffect>();
     }
 
-    public override void Shoot()
+    public override void ShootServer()
     {
         if(isFiring)
         {
@@ -37,7 +37,7 @@ public class Rifle : Weapon
             Vector3 dir = BulletSpread();
             Ray ray = new Ray(firePoint.position, dir);
 
-            effect?.PlayMuzzleEffect();
+            effect?.PlayMuzzleEffectServerRpc();
 
             if (Physics.Raycast(ray, out RaycastHit hit, weaponRange, damageableMask))
             {
@@ -46,7 +46,7 @@ public class Rifle : Weapon
                 HitBox hitbox = hit.collider.GetComponent<HitBox>();
                 hitbox?.ReceiveHit(weaponDamage, transform.root.gameObject);
 
-                effect?.PlayImpactEffect(hit);
+                effect?.PlayImpactEffectServerRpc(hit.point);
             }
             else
             {

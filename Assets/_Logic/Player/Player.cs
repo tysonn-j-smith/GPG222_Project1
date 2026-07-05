@@ -23,11 +23,6 @@ public class Player : NetworkBehaviour
         info = GetComponent<PlayerInfoHandler>();
     }
 
-    private void OnDestroy()
-    {
-        GameMaster.Instance.UnregisterPlayer(this.gameObject);
-    }
-
     private void OnEnable()
     {
         handler.OnMoveInput += RequestMovement;
@@ -46,33 +41,75 @@ public class Player : NetworkBehaviour
         handler.OnReloadInput -= RequestReload;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        info.SetName();
+
+        RegisterPlayer();
+    }
+
+    public override void OnDestroy()
+    {
+        GameMaster.Instance.UnregisterPlayer(this.gameObject);
+    }
+
     public void RegisterPlayer()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         GameMaster.Instance.RegisterPlayer(this.gameObject, info.GetName());
     }
 
     private void RequestMovement(Vector2 input)
     {
+        if(!IsOwner)
+        {
+            return;
+        }
+
         motor.SetInput(input);
     }
 
     private void RequestLook(Vector2 input)
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         cam.SetInput(input);
     }
 
     private void RequestJump()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         motor.TryJump();
     }
 
     private void RequestShoot()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         weapon.ShootCall();
     }
 
     private void RequestReload()
     {
+        if (!IsOwner)
+        {
+            return;
+        }
+
         weapon.ReloadCall();
     }
 }

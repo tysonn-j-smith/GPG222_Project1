@@ -1,16 +1,17 @@
 using System;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerInfoHandler : MonoBehaviour
+public class PlayerInfoHandler : NetworkBehaviour
 {
     private int currentScore = 0;
     private string playerName = string.Empty;
 
     public event Action<PlayerInfoHandler> OnKillConfirmed;
 
-    public void SetName(string newName)
+    public void SetName()
     {
-        playerName = newName;
+        playerName = "Player: " + NetworkManager.Singleton.LocalClientId.ToString();
     }
 
     public string GetName()

@@ -1,28 +1,63 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerWeapon : MonoBehaviour
+public class PlayerWeapon : NetworkBehaviour
 {
     [SerializeField] private Weapon currentWeapon;
 
     public void ShootCall()
     {
-        if(currentWeapon == null)
+        if (!IsOwner) 
         {
-            Debug.LogWarning("No Weapon found!");
             return;
         }
 
-        currentWeapon?.TryShoot();
-    }
-
-    public void ReloadCall()
-    {
         if (currentWeapon == null)
         {
             Debug.LogWarning("No Weapon found!");
             return;
         }
 
-        currentWeapon?.TryReload();
+        ShootServerRpc();
     }
+
+    public void ReloadCall()
+    {
+        if (!IsOwner)
+        {
+            return;
+        }
+
+        if (currentWeapon == null)
+        {
+            Debug.LogWarning("No Weapon found!");
+            return;
+        }
+
+        ReloadServerRpc();
+    }
+
+    #region RPC
+    [Rpc(SendTo.Server)]
+    private void ShootServerRpc()
+    {
+        if(currentWeapon == null)
+        {
+            return;
+        }
+
+        currentWeapon.TryShootServer();
+    }
+
+    [Rpc(SendTo.Server)]
+    private void ReloadServerRpc()
+    {
+        if (currentWeapon == null)
+        {
+            return;
+        }
+
+        currentWeapon.TryReloadServer();
+    }
+    #endregion
 }

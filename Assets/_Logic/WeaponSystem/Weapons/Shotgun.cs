@@ -15,7 +15,7 @@ public class Shotgun : Weapon
         effect = GetComponent<WeaponEffect>();
     }
 
-    public override void Shoot()
+    public override void ShootServer()
     {
         StopAllCoroutines();
         StartCoroutine(BurstRoutine());
@@ -23,7 +23,7 @@ public class Shotgun : Weapon
 
     private IEnumerator BurstRoutine()
     {
-        effect?.PlayMuzzleEffect();
+        effect?.PlayMuzzleEffectServerRpc();
 
         for (int i = 0; i < shotCount; i++)
         {
@@ -37,7 +37,7 @@ public class Shotgun : Weapon
                 HitBox hitbox = hit.collider.GetComponent<HitBox>();
                 hitbox?.ReceiveHit(weaponDamage, transform.root.gameObject);
 
-                effect?.PlayImpactEffect(hit);
+                effect?.PlayImpactEffectServerRpc(hit.point);
             }
             else
             {
