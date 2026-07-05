@@ -1,24 +1,19 @@
 using System.Collections;
 using UnityEngine;
+using Unity.Netcode;
+using System.Collections.Generic;
 
-public class PlayerSpawnerManager : MonoBehaviour
+public class PlayerSpawnerManager : NetworkBehaviour
 {
-    [SerializeField] private Transform spawnPos;
+    [Header("Player Spawner Manager Settings")]
+    [SerializeField] private List<Transform> spawnPoints;
     [SerializeField] private float spawnDelay = 2f;
-
-    private GameObject playerObj;
 
     private bool isSpawning = false;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        if (spawnPos == null)
-        {
-            Debug.LogError($"Player spawn position not set!");
-            return;
-        }
-
-        if(isSpawning == true)
+        if (!IsServer)
         {
             return;
         }
@@ -28,8 +23,10 @@ public class PlayerSpawnerManager : MonoBehaviour
 
     public void CallSpawn()
     {
-        StopAllCoroutines();
-        StartCoroutine(SpawnPlayerRoutine());
+        if (!isSpawning)
+        {
+            StartCoroutine(SpawnPlayerRoutine());
+        }
     }
 
     private IEnumerator SpawnPlayerRoutine()
@@ -38,14 +35,20 @@ public class PlayerSpawnerManager : MonoBehaviour
 
         yield return new WaitForSeconds(spawnDelay);
 
-        playerObj = ObjectPooler.Instance.GetFromPool("player", spawnPos.position, Quaternion.identity);
-
-        if (playerObj == null)
+        if (spawnPoints == null || spawnPoints.Count == 0)
         {
-            Debug.LogError($"Player does not exist in pool!");
+            Debug.LogWarning("No spawn points assigned.");
             isSpawning = false;
 
             yield break;
+        }
+
+        Transform rngPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+        GameObject playerObj = ObjectPooler.Instance.GetFromPool("player", rngPoint.position, Quaternion.identity);
+
+        if (playerObj == null)
+        {
+            Debug.LogError("Player does not exist in pool!");
         }
 
         isSpawning = false;
