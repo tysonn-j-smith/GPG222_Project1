@@ -4,8 +4,24 @@ using UnityEngine;
 public class WeaponEffect : MonoBehaviour
 {
     [Header("Weapon Effect Settings")]
-    [SerializeField] private ParticleSystem muzzleEffect;
-    [SerializeField] private ParticleSystem impactEffect;
+    [SerializeField] private Transform firePoint;
+    private ParticleSystem muzzleEffect;
+    private ParticleSystem impactEffect;
+
+    private void Start()
+    {
+        GameObject muzzle = ObjectPooler.Instance.GetFromPool("muzzleEffect", firePoint.position, Quaternion.identity);
+        muzzle.transform.parent = firePoint.transform;
+        muzzleEffect = muzzle.GetComponent<ParticleSystem>();
+
+        GameObject impact = ObjectPooler.Instance.GetFromPool("impactEffect", transform.position, Quaternion.identity);
+        impactEffect = impact.GetComponent<ParticleSystem>();
+
+        if(muzzleEffect == null || impactEffect == null)
+        {
+            return;
+        }
+    }
 
     public void PlayMuzzleEffect()
     {
