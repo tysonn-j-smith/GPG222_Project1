@@ -8,12 +8,6 @@ public class PlayerInfoHandler : MonoBehaviour
 
     public event Action<PlayerInfoHandler> OnKillConfirmed;
 
-    private void OnDestroy()
-    {
-        currentScore = 0;
-        playerName = string.Empty;
-    }
-
     public void SetName(string newName)
     {
         playerName = newName;

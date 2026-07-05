@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerScoreManager : MonoBehaviour
 {
+    public event Action OnScoresChanged;
+
     public Dictionary<GameObject, PlayerInfoHandler> players = new();
 
     private void Start()
@@ -50,7 +52,11 @@ public class PlayerScoreManager : MonoBehaviour
 
     private void HandleKill(PlayerInfoHandler player)
     {
-        Debug.Log($"Player {player.GetName()} | Score: {player.GetScore()}");
-        GameMaster.Instance.UpdateScoreBoard();
+        if(player == null)
+        {
+            return;
+        }
+
+        OnScoresChanged?.Invoke();
     }
 }

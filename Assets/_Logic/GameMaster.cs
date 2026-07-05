@@ -6,14 +6,34 @@ public class GameMaster : MonoBehaviour
     public static GameMaster Instance { get; private set; }
 
     private PlayerScoreManager scoreManager;
-
-    [SerializeField] private TMP_Text scoreBoardTestText;
+    private ScoreBoardManager boardManager;
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
 
         scoreManager = GetComponent<PlayerScoreManager>();
+        boardManager = GetComponent<ScoreBoardManager>();
+    }
+
+    private void Start()
+    {
+        scoreManager.OnScoresChanged += UpdateScoreBoard;
+        UpdateScoreBoard();
+    }
+
+    private void OnDestroy()
+    {
+        if (scoreManager != null)
+        {
+            scoreManager.OnScoresChanged -= UpdateScoreBoard;
+        }
     }
 
     public void RegisterPlayer(GameObject player, string newName)
@@ -35,14 +55,11 @@ public class GameMaster : MonoBehaviour
 
     public void UpdateScoreBoard()
     {
-        if (scoreBoardTestText != null)
+        if(scoreManager == null ||  boardManager == null)
         {
-            scoreBoardTestText.text = "";
-
-            foreach(PlayerInfoHandler player in scoreManager.players.Values)
-            {
-                scoreBoardTestText.text += player.GetName() + " : " + player.GetScore() + "\n";
-            }
+            return;
         }
+
+        boardManager.PopulateScoreBoard(scoreManager.players.Values);
     }
 }
