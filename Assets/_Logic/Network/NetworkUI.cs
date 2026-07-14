@@ -15,20 +15,20 @@ public class NetworkUI : NetworkBehaviour
 
     private void Awake()
     {
-        startHostButton.onClick.AddListener(() =>
+        /*startHostButton.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartHost();
+            //RelayManager.Instance.StartHostWithRelay(4, "udp");
         });
 
         startClientButton.onClick.AddListener(() =>
         {
-            NetworkManager.Singleton.StartClient();
+            //RelayManager.Instance.StartClientWithRelay(4, "udp");
         });
 
         quitButton.onClick.AddListener(() =>
         {
             Application.Quit();
-        });
+        });*/
     }
 
     private void Update()
